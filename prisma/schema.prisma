@@ -10,3 +10,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       String @id @default(cuid())
+  name     String
+  email    String @unique
+  password String
+
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  ShortLinks ShortLinks[]
+}
+
+model ShortLinks {
+  id         String   @id @default(cuid())
+  defaultUrl String
+  shortUrl   String   @unique
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String
+}
